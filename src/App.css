@@ -197,7 +197,8 @@
 }
 
 .factor-board__left {
-  padding-right: 11%;
+  padding-right: 3%;
+  text-align: right;
 }
 
 .factor-board__right {
