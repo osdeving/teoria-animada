@@ -1,6 +1,6 @@
 # Teoria Animada
 
-App React + Vite pensado para publicar explicacoes matematicas em abas, com cada topico ligado a uma animacao Manim passo a passo.
+App React + Vite pensado para publicar animacoes matematicas em formato teletype, com a operacao ocupando praticamente a tela toda.
 
 ## Objetivo
 
@@ -8,9 +8,9 @@ App React + Vite pensado para publicar explicacoes matematicas em abas, com cada
 - manter o roteiro didatico no frontend e os assets renderizados pelo Manim em `public/manim/`
 - reaproveitar as receitas Python ja curadas em `recipes/`
 
-## Primeira leva de modulos
+## Modulos
 
-- MMC por divisoes sucessivas
+- MMC por divisoes sucessivas em teletype
 - MDC por fatoracao e encontro de fatores comuns
 - divisao longa com descida guiada
 - numero de divisores por produto dos expoentes somados de 1
@@ -36,8 +36,8 @@ python3 -m compileall recipes
 
 ## Estrutura
 
-- `src/data/lessons.ts`: manifesto das abas e do roteiro de cada animacao
-- `src/components/`: UI do catalogo de modulos e do palco de exibicao
+- `src/data/lessons.ts`: manifesto da lista e dos roteiros teletype
+- `src/components/`: lista de modulos e player de animacao
 - `public/manim/`: videos, posters e futuros captions exportados do Manim
 - `recipes/`: biblioteca Python de tecnicas de animacao reutilizaveis
 - `.codex/skills/teoria-animada-lesson/SKILL.md`: skill local para evoluir o projeto com consistencia

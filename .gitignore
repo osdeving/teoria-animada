@@ -38,3 +38,5 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 media/
+.playwright-cli/
+output/playwright/

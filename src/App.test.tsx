@@ -1,42 +1,68 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 
 describe('App', () => {
-  it('renders the landing view and default lesson', () => {
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('renders the module list and selects MMC by default', () => {
     render(<App />)
 
     expect(
       screen.getByRole('heading', {
         level: 1,
-        name: /algoritmos de matematica ganhando ritmo/i,
+        name: /teoria animada/i,
       }),
     ).toBeInTheDocument()
 
     expect(
+      screen.getByRole('tab', {
+        name: /mmc por divisoes sucessivas/i,
+      }),
+    ).toHaveAttribute('aria-selected', 'true')
+
+    expect(
       screen.getByRole('heading', {
-        level: 3,
+        level: 2,
         name: /mmc por divisoes sucessivas/i,
       }),
     ).toBeInTheDocument()
   })
 
-  it('switches tabs and updates the selected lesson content', () => {
+  it('types the MMC operation in teletype mode', async () => {
+    vi.useFakeTimers()
+
+    render(<App />)
+
+    for (let step = 0; step < 24; step += 1) {
+      await act(async () => {
+        await vi.runOnlyPendingTimersAsync()
+      })
+    }
+
+    expect(screen.getByTestId('teletype-screen')).toHaveTextContent(
+      /12, 18, 30 \| 2/,
+    )
+  })
+
+  it('switches to a placeholder scene for modules not ready yet', () => {
     render(<App />)
 
     fireEvent.click(
       screen.getByRole('tab', {
-        name: /divisao longa com descida guiada/i,
+        name: /divisao longa/i,
       }),
     )
 
     expect(
       screen.getByRole('heading', {
-        level: 3,
-        name: /divisao longa com descida guiada/i,
+        level: 2,
+        name: /divisao longa/i,
       }),
     ).toBeInTheDocument()
 
-    expect(screen.getByText('845,6 / 4')).toBeInTheDocument()
+    expect(screen.getByText(/cena em preparo/i)).toBeInTheDocument()
   })
 })
