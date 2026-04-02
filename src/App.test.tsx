@@ -31,19 +31,21 @@ describe('App', () => {
     ).toBeInTheDocument()
   })
 
-  it('types the MMC operation in teletype mode', async () => {
+  it('draws the MMC table with a real divider line', async () => {
     vi.useFakeTimers()
 
     render(<App />)
 
-    for (let step = 0; step < 24; step += 1) {
+    for (let step = 0; step < 16; step += 1) {
       await act(async () => {
         await vi.runOnlyPendingTimersAsync()
       })
     }
 
-    expect(screen.getByTestId('teletype-screen')).toHaveTextContent(
-      /12, 18, 30 \| 2/,
+    expect(screen.getByText('12, 18, 30')).toBeInTheDocument()
+    expect(screen.getByText('2')).toBeInTheDocument()
+    expect(screen.getByTestId('factor-divider-vertical')).toHaveClass(
+      'is-drawn',
     )
   })
 

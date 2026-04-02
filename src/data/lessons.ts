@@ -1,14 +1,17 @@
-export type TeletypeBeat = {
-  pause?: number
-  text: string
+export type FactorizationRow = {
+  left: string
+  right?: string
 }
 
 export type LessonScene =
   | {
       charDelay?: number
+      footer: string
+      lineDrawDuration?: number
       loopDelay?: number
-      script: TeletypeBeat[]
-      type: 'teletype'
+      rows: FactorizationRow[]
+      stepPause?: number
+      type: 'factorization'
     }
   | {
       message: string
@@ -23,35 +26,25 @@ export type Lesson = {
   title: string
 }
 
-const mmcScript: TeletypeBeat[] = [
-  { text: '12, 18, 30', pause: 520 },
-  { text: ' |', pause: 220 },
-  { text: ' 2', pause: 460 },
-  { text: '\n 6,  9, 15', pause: 520 },
-  { text: ' |', pause: 220 },
-  { text: ' 2', pause: 460 },
-  { text: '\n 3,  9, 15', pause: 520 },
-  { text: ' |', pause: 220 },
-  { text: ' 3', pause: 460 },
-  { text: '\n 1,  3,  5', pause: 520 },
-  { text: ' |', pause: 220 },
-  { text: ' 3', pause: 460 },
-  { text: '\n 1,  1,  5', pause: 520 },
-  { text: ' |', pause: 220 },
-  { text: ' 5', pause: 460 },
-  { text: '\n 1,  1,  1', pause: 780 },
-  { text: '\n\nMMC = 2 x 2 x 3 x 3 x 5 = 180', pause: 2200 },
-]
-
 export const lessons: Lesson[] = [
   {
     id: 'mmc',
     label: 'MMC',
     scene: {
-      charDelay: 54,
+      charDelay: 58,
+      footer: '2 · 2 · 3 · 3 · 5 = 180',
+      lineDrawDuration: 680,
       loopDelay: 2200,
-      script: mmcScript,
-      type: 'teletype',
+      rows: [
+        { left: '12, 18, 30', right: '2' },
+        { left: ' 6,  9, 15', right: '2' },
+        { left: ' 3,  9, 15', right: '3' },
+        { left: ' 1,  3,  5', right: '3' },
+        { left: ' 1,  1,  5', right: '5' },
+        { left: ' 1,  1,  1' },
+      ],
+      stepPause: 260,
+      type: 'factorization',
     },
     status: 'ready',
     title: 'MMC por divisoes sucessivas',

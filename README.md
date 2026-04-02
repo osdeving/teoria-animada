@@ -1,6 +1,6 @@
 # Teoria Animada
 
-App React + Vite pensado para publicar animacoes matematicas em formato teletype, com a operacao ocupando praticamente a tela toda.
+App React + Vite pensado para publicar animacoes matematicas em quadro escuro, com a operacao ocupando praticamente a tela toda e escrita surgindo como em caderno.
 
 ## Objetivo
 
@@ -10,7 +10,7 @@ App React + Vite pensado para publicar animacoes matematicas em formato teletype
 
 ## Modulos
 
-- MMC por divisoes sucessivas em teletype
+- MMC por divisoes sucessivas com escrita manual e traços reais
 - MDC por fatoracao e encontro de fatores comuns
 - divisao longa com descida guiada
 - numero de divisores por produto dos expoentes somados de 1
