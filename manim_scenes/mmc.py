@@ -1,23 +1,25 @@
 from __future__ import annotations
 
 import numpy as np
-from manim import BLACK, Create, Scene, Text, VMobject, Write, linear
+from manim import BLACK, Create, FadeOut, Scene, Text, VMobject, Write, linear
 from manim.mobject.text.text_mobject import register_font
 
 
 FONT_FILE = "assets/fonts/Caveat-Medium.ttf"
 FONT_NAME = "Caveat"
 INK = "#F7F3EA"
+NOTE_INK = "#D7E0F0"
 
-ROWS = [
-    ("12, 18, 30", "2"),
-    (" 6,  9, 15", "2"),
-    (" 3,  9, 15", "3"),
-    (" 1,  3,  5", "3"),
-    (" 1,  1,  5", "5"),
-    (" 1,  1,  1", None),
+STEPS = [
+    ("12, 18, 30", "2", "da por 2"),
+    (" 6,  9, 15", "2", "da por 2"),
+    (" 3,  9, 15", "3", "da por 3"),
+    (" 1,  3,  5", "3", "da por 3"),
+    (" 1,  1,  5", "5", "da por 5"),
+    (" 1,  1,  1", None, None),
 ]
-FOOTER = "2 · 2 · 3 · 3 · 5 = 180"
+FOOTER = "2^2 · 3^2 · 5 = 180"
+FINAL_NOTE = "agora, basta\ncalcular o produto\ndas potencias"
 
 
 def scribble_line(start: np.ndarray, end: np.ndarray, *, width: float = 6) -> VMobject:
@@ -46,18 +48,21 @@ class LeastCommonMultipleScene(Scene):
     def construct(self) -> None:
         self.camera.background_color = BLACK
 
-        divider_x = 2.25
-        left_anchor_x = divider_x - 0.08
-        right_anchor_x = divider_x + 0.18
-        top_y = 2.75
-        row_gap = 0.94
-        font_size = 110
+        divider_x = 1.18
+        left_anchor_x = divider_x - 0.12
+        right_anchor_x = divider_x + 0.16
+        note_anchor_x = divider_x + 1.35
+        top_y = 2.9
+        row_gap = 0.8
+        font_size = 88
+        note_font_size = 42
 
         with register_font(FONT_FILE):
             left_rows: list[Text] = []
             right_rows: list[Text] = []
+            notes: list[Text | None] = []
 
-            for row_index, (left_text, right_text) in enumerate(ROWS):
+            for row_index, (left_text, right_text, note_text) in enumerate(STEPS):
                 y = top_y - row_index * row_gap
 
                 left = Text(left_text, font=FONT_NAME, font_size=font_size, color=INK)
@@ -80,26 +85,54 @@ class LeastCommonMultipleScene(Scene):
                 )
                 right_rows.append(right)
 
-            footer_y = top_y - (len(ROWS) - 1) * row_gap - 1.35
+                if note_text is None:
+                    notes.append(None)
+                    continue
+
+                note = Text(
+                    note_text,
+                    font=FONT_NAME,
+                    font_size=note_font_size,
+                    color=NOTE_INK,
+                )
+                note.move_to(
+                    np.array([note_anchor_x + note.width / 2, y + 0.03, 0.0]),
+                )
+                notes.append(note)
+
+            footer_y = top_y - (len(STEPS) - 1) * row_gap - 1.08
             footer = Text(
                 FOOTER,
                 font=FONT_NAME,
-                font_size=104,
+                font_size=82,
                 color=INK,
             )
             footer.move_to(
                 np.array(
-                    [right_anchor_x + footer.width / 2 - 0.05, footer_y, 0.0],
+                    [divider_x + 0.2 + footer.width / 2, footer_y, 0.0],
+                ),
+            )
+
+            final_note = Text(
+                FINAL_NOTE,
+                font=FONT_NAME,
+                font_size=36,
+                color=NOTE_INK,
+                line_spacing=0.72,
+            )
+            final_note.move_to(
+                np.array(
+                    [note_anchor_x + final_note.width / 2, footer_y + 1.45, 0.0],
                 ),
             )
 
         vertical_line = scribble_line(
-            np.array([divider_x, top_y + 0.52, 0.0]),
-            np.array([divider_x, footer_y - 0.55, 0.0]),
+            np.array([divider_x, top_y + 0.42, 0.0]),
+            np.array([divider_x, footer_y - 0.48, 0.0]),
         )
         horizontal_line = scribble_line(
-            np.array([divider_x - 0.02, footer_y + 0.7, 0.0]),
-            np.array([footer.get_right()[0] + 0.28, footer_y + 0.7, 0.0]),
+            np.array([divider_x - 0.02, footer_y + 0.55, 0.0]),
+            np.array([footer.get_right()[0] + 0.24, footer_y + 0.55, 0.0]),
         )
 
         self.play(
@@ -114,6 +147,11 @@ class LeastCommonMultipleScene(Scene):
             Write(right_rows[0], rate_func=linear),
             run_time=0.55,
         )
+        active_note = notes[0]
+        self.play(
+            Write(active_note, rate_func=linear),
+            run_time=0.45,
+        )
 
         for row_index, row in enumerate(left_rows[1:], start=1):
             self.play(Write(row, rate_func=linear), run_time=0.9)
@@ -126,6 +164,19 @@ class LeastCommonMultipleScene(Scene):
                 run_time=0.45,
             )
 
+            if notes[row_index] is not None:
+                self.play(
+                    FadeOut(active_note, rate_func=linear),
+                    Write(notes[row_index], rate_func=linear),
+                    run_time=0.4,
+                )
+                active_note = notes[row_index]
+
+        self.play(
+            FadeOut(active_note, rate_func=linear),
+            run_time=0.25,
+        )
+
         self.play(
             Create(horizontal_line, rate_func=linear),
             run_time=0.7,
@@ -133,5 +184,9 @@ class LeastCommonMultipleScene(Scene):
         self.play(
             Write(footer, rate_func=linear),
             run_time=1.8,
+        )
+        self.play(
+            Write(final_note, rate_func=linear),
+            run_time=1.4,
         )
         self.wait(1.2)
