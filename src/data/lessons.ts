@@ -1,17 +1,7 @@
-export type FactorizationRow = {
-  left: string
-  right?: string
-}
-
 export type LessonScene =
   | {
-      charDelay?: number
-      footer: string
-      lineDrawDuration?: number
-      loopDelay?: number
-      rows: FactorizationRow[]
-      stepPause?: number
-      type: 'factorization'
+      src: string
+      type: 'video'
     }
   | {
       message: string
@@ -31,20 +21,8 @@ export const lessons: Lesson[] = [
     id: 'mmc',
     label: 'MMC',
     scene: {
-      charDelay: 58,
-      footer: '2 · 2 · 3 · 3 · 5 = 180',
-      lineDrawDuration: 680,
-      loopDelay: 2200,
-      rows: [
-        { left: '12, 18, 30', right: '2' },
-        { left: ' 6,  9, 15', right: '2' },
-        { left: ' 3,  9, 15', right: '3' },
-        { left: ' 1,  3,  5', right: '3' },
-        { left: ' 1,  1,  5', right: '5' },
-        { left: ' 1,  1,  1' },
-      ],
-      stepPause: 260,
-      type: 'factorization',
+      src: 'manim/mmc/scene.mp4',
+      type: 'video',
     },
     status: 'ready',
     title: 'MMC por divisoes sucessivas',
@@ -53,7 +31,7 @@ export const lessons: Lesson[] = [
     id: 'mdc',
     label: 'MDC',
     scene: {
-      message: 'Cena em preparo.',
+      message: 'Cena Manim em preparo.',
       type: 'placeholder',
     },
     status: 'soon',
@@ -63,7 +41,7 @@ export const lessons: Lesson[] = [
     id: 'divisao',
     label: 'Divisao',
     scene: {
-      message: 'Cena em preparo.',
+      message: 'Cena Manim em preparo.',
       type: 'placeholder',
     },
     status: 'soon',
@@ -73,7 +51,7 @@ export const lessons: Lesson[] = [
     id: 'divisores',
     label: 'Divisores',
     scene: {
-      message: 'Cena em preparo.',
+      message: 'Cena Manim em preparo.',
       type: 'placeholder',
     },
     status: 'soon',
@@ -83,7 +61,7 @@ export const lessons: Lesson[] = [
     id: 'fracoes',
     label: 'Fracoes',
     scene: {
-      message: 'Cena em preparo.',
+      message: 'Cena Manim em preparo.',
       type: 'placeholder',
     },
     status: 'soon',

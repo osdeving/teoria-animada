@@ -1,12 +1,8 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
 import App from './App'
 
 describe('App', () => {
-  afterEach(() => {
-    vi.useRealTimers()
-  })
-
   it('renders the module list and selects MMC by default', () => {
     render(<App />)
 
@@ -24,29 +20,22 @@ describe('App', () => {
     ).toHaveAttribute('aria-selected', 'true')
 
     expect(
-      screen.getByRole('heading', {
-        level: 2,
+      screen.getByRole('tabpanel', {
         name: /mmc por divisoes sucessivas/i,
       }),
     ).toBeInTheDocument()
+
+    expect(
+      screen.getByLabelText(/reproducao de mmc por divisoes sucessivas/i),
+    ).toBeInTheDocument()
   })
 
-  it('draws the MMC table with a real divider line', async () => {
-    vi.useFakeTimers()
-
+  it('mounts the rendered manim video for mmc', () => {
     render(<App />)
 
-    for (let step = 0; step < 16; step += 1) {
-      await act(async () => {
-        await vi.runOnlyPendingTimersAsync()
-      })
-    }
-
-    expect(screen.getByText('12, 18, 30')).toBeInTheDocument()
-    expect(screen.getByText('2')).toBeInTheDocument()
-    expect(screen.getByTestId('factor-divider-vertical')).toHaveClass(
-      'is-drawn',
-    )
+    expect(
+      screen.getByLabelText(/reproducao de mmc por divisoes sucessivas/i),
+    ).toHaveAttribute('src', expect.stringContaining('/manim/mmc/scene.mp4'))
   })
 
   it('switches to a placeholder scene for modules not ready yet', () => {
@@ -59,12 +48,11 @@ describe('App', () => {
     )
 
     expect(
-      screen.getByRole('heading', {
-        level: 2,
+      screen.getByRole('tabpanel', {
         name: /divisao longa/i,
       }),
     ).toBeInTheDocument()
 
-    expect(screen.getByText(/cena em preparo/i)).toBeInTheDocument()
+    expect(screen.getByText(/cena manim em preparo/i)).toBeInTheDocument()
   })
 })

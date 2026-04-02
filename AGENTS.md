@@ -9,6 +9,7 @@ Este repositorio publica um app React estatico no GitHub Pages para hospedar ani
 - mantenha o frontend compativel com hospedagem estatica
 - trate `src/data/lessons.ts` como a fonte de verdade dos modulos
 - prefira assets em `public/manim/<slug>/scene.mp4` e `poster.webp`
+- trate `manim_scenes/` como a fonte de verdade visual, nao o frontend
 - preserve `recipes/` como biblioteca Python reaproveitavel
 - quando o fluxo didatico mudar, sincronize app, docs e assets esperados
 

@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "render:mmc": ".venv/bin/python scripts/render_manim_assets.py mmc",
     "test": "vitest",
     "test:ci": "vitest run --coverage",
     "typecheck": "tsc -b",

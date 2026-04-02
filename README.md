@@ -1,11 +1,11 @@
 # Teoria Animada
 
-App React + Vite pensado para publicar animacoes matematicas em quadro escuro, com a operacao ocupando praticamente a tela toda e escrita surgindo como em caderno.
+App React + Vite pensado para publicar animacoes renderizadas com Manim, deixando o frontend apenas como lista de modulos e player do asset final.
 
 ## Objetivo
 
 - transformar algoritmos de matematica em microaulas visuais
-- manter o roteiro didatico no frontend e os assets renderizados pelo Manim em `public/manim/`
+- manter o frontend como container/player e os assets renderizados pelo Manim em `public/manim/`
 - reaproveitar as receitas Python ja curadas em `recipes/`
 
 ## Modulos
@@ -19,6 +19,7 @@ App React + Vite pensado para publicar animacoes matematicas em quadro escuro, c
 ## Stack
 
 - React 19 + TypeScript + Vite
+- Python 3.13 + Manim Community
 - Vitest + Testing Library
 - ESLint + Prettier
 - GitHub Actions para CI e deploy no GitHub Pages
@@ -28,15 +29,19 @@ App React + Vite pensado para publicar animacoes matematicas em quadro escuro, c
 ```bash
 npm install
 npm run dev
+npm run render:mmc
 npm run lint
 npm run test
 npm run build
+.venv/bin/python scripts/render_manim_assets.py mmc
 python3 -m compileall recipes
 ```
 
 ## Estrutura
 
-- `src/data/lessons.ts`: manifesto da lista e dos roteiros teletype
+- `manim_scenes/`: cenas Python que geram os videos do app
+- `scripts/render_manim_assets.py`: fluxo de render para os assets publicados
+- `src/data/lessons.ts`: manifesto da lista e dos assets de cada modulo
 - `src/components/`: lista de modulos e player de animacao
 - `public/manim/`: videos, posters e futuros captions exportados do Manim
 - `recipes/`: biblioteca Python de tecnicas de animacao reutilizaveis
@@ -46,7 +51,7 @@ python3 -m compileall recipes
 ## Como adicionar um novo topico
 
 1. Adicione o manifesto do modulo em `src/data/lessons.ts`.
-2. Renderize ou copie os assets para `public/manim/<slug>/`.
+2. Renderize a cena via Manim para `public/manim/<slug>/`.
 3. Se a cena exigir um novo padrao de movimento, atualize `recipes/`.
 4. Rode `npm run lint`, `npm run test`, `npm run build` e `python3 -m compileall recipes`.
 
